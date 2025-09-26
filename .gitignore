@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+instance/app.db
+.venv/
+.env
+.pytest_cache/
+migrations/versions/__pycache__/

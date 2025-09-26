@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Produtos · Controle de Estoque{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Produtos</h1>
+  <a class="btn btn-primary" href="{{ url_for('products.create_product') }}">Novo produto</a>
+</div>
+<table class="table table-hover align-middle">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th class="text-end">Estoque</th>
+      <th class="text-end">Mínimo</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+      <tr class="{% if product.is_below_minimum %}table-warning{% endif %}">
+        <td>{{ product.name }}</td>
+        <td>{{ product.description or '-' }}</td>
+        <td class="text-end">{{ product.stock }}</td>
+        <td class="text-end">{{ product.minimum_stock }}</td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('products.edit_product', product_id=product.id) }}">Editar</a>
+          <form method="post" action="{{ url_for('products.delete_product', product_id=product.id) }}" class="d-inline">
+            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Deseja realmente remover este produto?')">Remover</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr>
+        <td colspan="5" class="text-center text-muted">Nenhum produto cadastrado ainda.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
