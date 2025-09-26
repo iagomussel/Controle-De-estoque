@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Movimentações · Controle de Estoque{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Movimentações</h1>
+  <a class="btn btn-primary" href="{{ url_for('movements.create_movement') }}">Nova movimentação</a>
+</div>
+<table class="table table-striped align-middle">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Produto</th>
+      <th class="text-end">Quantidade</th>
+      <th>Tipo</th>
+      <th>Observações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for movement in movements %}
+      <tr>
+        <td>{{ movement.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td>{{ movement.product.name }}</td>
+        <td class="text-end">{{ movement.quantity }}</td>
+        <td>
+          <span class="badge {% if movement.is_entry() %}bg-success{% else %}bg-danger{% endif %}">
+            {{ 'Entrada' if movement.is_entry() else 'Saída' }}
+          </span>
+        </td>
+        <td>{{ movement.notes or '-' }}</td>
+      </tr>
+    {% else %}
+      <tr>
+        <td colspan="5" class="text-center text-muted">Nenhuma movimentação registrada.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

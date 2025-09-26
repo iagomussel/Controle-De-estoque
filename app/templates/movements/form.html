@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Nova movimentação · Controle de Estoque{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">Nova movimentação</h1>
+<form method="post" class="card shadow-sm">
+  <div class="card-body">
+    <div class="mb-3">
+      <label class="form-label" for="product_id">Produto</label>
+      <select class="form-select" id="product_id" name="product_id" required>
+        <option value="" disabled selected>Selecione um produto</option>
+        {% for product in products %}
+          <option value="{{ product.id }}">{{ product.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="movement_type">Tipo de movimentação</label>
+      <select class="form-select" id="movement_type" name="movement_type" required>
+        <option value="{{ MovementType.ENTRY.value }}">Entrada</option>
+        <option value="{{ MovementType.EXIT.value }}">Saída</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="quantity">Quantidade</label>
+      <input class="form-control" type="number" min="1" id="quantity" name="quantity" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="notes">Observações</label>
+      <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+    </div>
+  </div>
+  <div class="card-footer text-end">
+    <a class="btn btn-outline-secondary" href="{{ url_for('movements.list_movements') }}">Cancelar</a>
+    <button type="submit" class="btn btn-primary">Registrar</button>
+  </div>
+</form>
+{% endblock %}
